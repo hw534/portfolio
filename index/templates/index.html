@@ -1,0 +1,234 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <title>hw534</title>
+    <style>
+        body{
+            background-color: rgb(240, 240, 240);
+        }
+
+        nav {
+            position: fixed;
+            width: 70px;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            background-color: white;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.336);
+            z-index: 2;
+        }
+
+        nav a{
+            display: block;
+            position: relative;
+            left: -15px;
+            top: var(--i);
+            text-decoration: none;
+            color: rgb(66, 66, 66);
+            transition: 0.5;
+        }
+
+        .active {
+            background-color: rgb(141, 211, 37);
+            text-align: center;
+            border: solid 10px rgb(141, 211, 37);
+            transform: translateX(-10px);
+            width: 20px;
+            border-radius: 100%;
+            color: white;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.336);
+        }
+
+        .active:hover::after{
+            content: var(--x);
+            position: absolute;
+            color: rgb(88, 88, 88);
+            background-color: whitesmoke;
+            left: 50px;
+            top: -5px;
+            width: 100px;
+            padding: 5px;
+            border-radius: 5px;
+            z-index: 10;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.164);
+        }
+
+        .content{
+            margin-left: 5%;
+            padding: 10px;
+            margin-top: 2%;
+            z-index: 1;
+        }
+
+        .area {
+            background-color: white;
+            padding: 10px;
+            width: calc(100% - 10px);
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.068);
+        }
+
+        .about{
+            text-indent: 20px;
+        }
+
+        .about img {
+            float: left; border-radius: 20px; margin: 20px;
+            width: 50%;
+            min-height: 300px;
+            max-width: 600px;
+            max-height: 300px;
+        }
+
+        .about p{
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        .about a{
+            color: black;
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+
+        #mark {
+            background-color: black;
+            color: white;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 0px 10px;
+        }
+
+        #arrow{
+            animation: arrow 1s infinite;
+        }
+
+        @keyframes arrow {
+            0%, 100%{
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(10px);
+            }
+        }
+
+        .portfolio {
+            position: fixed;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.575);
+            z-index: 0;
+            text-align: center;
+        }
+
+        .portafolio-content{
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(255, 255, 255, 0.575);
+            display: none;
+            overflow: scroll;
+            
+        }
+
+        .card {
+            min-width: 300px;
+            max-width: 700px;
+            text-align: center;
+            margin: 10px;
+            background-color: white;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.397);
+            border-radius: 5px;
+            padding: 5px;
+        }
+
+        .card-image {
+            width: 100%;
+        }
+
+        .card a{
+            background-color: rgb(141, 211, 37);
+            color: white;
+            padding: 5px;
+            border-radius: 5px;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+            <nav>
+                <ul>
+                    <a id="home" class="active" style="--i:40px; --x:'Home'" href=""><i class="bi bi-house-fill"></i></a>
+                    <a id="show-portfolio" style="--i:80px; --x:'Briefcase'"><i class="bi bi-briefcase-fill"></i></a>
+                    <a style="--i:120px; --x:'Contact me'"><i class="bi bi-card-text"></i></a>
+                    <a href="https://t.me/devsxhobby" style="--i:160px; --x:'Telegram'" href=""><i class="bi bi-telegram"></i></a>
+                    <a href="https://github.com/hw534/" style="--i:200px; --x:'Github'" href=""><i class="bi bi-github"></i></a>
+                </ul>
+            </nav>
+
+        <div class="content"> 
+            <div class="area about">
+                <p>
+                <img src="{% static 'astronaut.webp' %}" alt="">
+                Hola, mi nombre es <span id="mark">Adonys</span> , soy desarrollador de aplicaciones web y multiplataformas proximamente. Nací y aun vivo en Santiago de Cuba, Cuba. A los 11 años empece a programar bots para Telegram con <span id="mark">Python 3.6</span> , usando la librería Python-Telegram-Bot, primeramente cree un bot para administrar grupos, con comandos basicos de administración, por ejemplo expulsar o silenciar miembros y un menu de configuración, utilizando JSON como "base de datos", luego decidí crear algo más que un simple bot, algo que cualquiera pudiese ver sin necesidad de enviar ningun archivo, y así aprendi <span id="mark">HTML</span>. No obstante, las paginas eran demasiado estaticas y.. feas. Buscando una solución descubrí <span id="mark">CSS</span>. Mi primera pagina web, era sin lugar a dudas, muy lamentable y a mí punto de vista ahora, causaba y causa daños mentales a los programadores más avanzados. Descubrí <span id="mark">JQuery</span>, así sin más, no sabía JavaScript y aprendí JQuery, tocando algunas cosas, mi 2da pagina web, estaba llena de colores y animaciones de las cuales me arrepiento. Bueno, continuo. Aun así, la web estaba muy "tiesa", no hacía nada. Entonces descubrí que una pagina web no llevaba solo, lo que en terminos de desarrollo de software se conoce como "FrontEnd", sino que también llevaba una parte del lado del servidor llamado "Backend". En mí país hay una frase que dice "Donde caiga el burro, caele a palos", y fue basicamente lo que hice. Aprendí sobre BackEnd con Flask en Python y <span id="mark">SQL</span>. Aun así no entendía mucho, tenía unos 12 años pero me daba igual yo quería aprender porque sí. Me metí a Youtube y mire los videos de introducción a <span id="mark">Django</span>  de Código Facilito, y así aprendí a manejar las bases de datos SQL desde Python, y olvide por completo a Flask. Mí atención se centro en Django y así aprendí a manejar modelos, manejar URLs, crear vistas, etc. Un día viendo un documental, descubrí una manera para "raspar" sitios webs. Y así nacío uno de mis mejores proyectos en Django, tenia deseos de comer algo y le puse de nombre "PanCake", un nombre muy original por cierto. PanCake era un buscador de sitios webs, como Google, Bing o cualquier otro. Antes de PanCake, una red social, llamada MkBits, la cual nunca llego a salir a la luz, y en la cual aun ando trabajando(Con mucha calma). Mientras trabaja en MkBits(Que luego paso a llamarse Friendship), aprendí <span id="mark">JavaScript</span> y cree una calculadora como proyecto para empezar. Mientras me adentré tambien al desarrollo de videojuegos y aprendí mucho sobre <span id="mark">C#</span>, aunque despues dejo de llamarme la atención y lo deje tirado. Por C# decidí aprender <span id="mark">C++</span>, el cual SÍ me llamaba la atención, aunque no tengo proyectos en el. Por la red social y el buscador web, tuve que aprender a crear REST APIs y aprender a consumir APIs, por ejemplo en el buscador, usaba la API de Wikipedia para brindar más información sobre las busquedas, y en la red social, tuve que para poder hacer ciertas acciones sin recargar la página, aprender AJAX y crear una API para cada acción, con <span id="mark">django-rest-framework</span>. Y luego de muchos proyectos que nunca salieron a la luz, debido a mi edad, descubrí PythonAnyWhere, donde podía "meter" mis sitios webs y donde esta alojado ahora mismo este portafolio. Se me olvidaba mencionar, que también entre mis conocimientos esta <span id="mark">TailwindCSS</span> y la <span id="mark">API BOT de Telegram</span>, que claro, ¿De que sirve aprender una API BOT de una red social o app de mensajería?. Pues, Telegram ofrece muchas oportunidades a los recién empezados en el mundo de la programación y permite encontrar grupos sobre diferentes temas con bastante facilidad, como es el caso de <a href="https://t.me/PythonEsp">@PythonEsp</a>.  </p> 
+            </div>
+        </div>
+        <br><br>
+        
+
+            
+        <div class="portfolio">
+            <p id="arrow"> Portafolio <i class="bi bi-arrow-down"></i> </p>
+        </div>
+
+        <div class="portafolio-content">
+            <div style="width: 80%; margin: 50px auto; display: flex">
+
+                <div class="card">
+                    <img class="card-image" src="{% static 'img/frienship.png'%}" alt="">
+                    <p> <span id="mark">Frienship</span>  es una red social en desarrollo para la web3.</p>
+                    <a href="">Ver script</a>
+                    <br><br>
+                </div>
+
+                <div class="card">
+                    <img class="card-image" src="{% static 'img/blog.png'%}" alt="">
+                    <p> <span id="mark">Blog</span> , con etiquetas, posicionamiento de publicaciones por vistas y más.</p>
+                    <a href="">Ver script</a>
+                    <br><br>
+                </div>
+            
+            </div>
+            <div style="width: 80%; margin: 50px auto; display: flex">
+                <div class="card">
+                    <img class="card-image" src="{% static 'img/pancake.png'%}" alt="">
+                    <p> <span id="mark">PanCake</span> es navegador web, utilizando la API de Wikipedia y link-scrappers.</p>
+                    <a href="">Ver script</a>
+                    <br><br>
+                </div>
+
+                <div class="card">
+                    <img class="card-image" src="{% static 'img/diseno.png'%}" alt="">
+                    <p><span id="mark">Plantilla</span> con un diseño 3D simple.</p>
+                    <a href="">Ver script</a>
+                    <br><br>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            $('#show-portfolio, #arrow').on('click', function(){
+                $('.portafolio-content').slideToggle();
+                $('#arrow').toggle();
+                $('#show-portfolio').toggleClass('active'); 
+                $('#home').toggleClass('active');
+            });
+        </script>
+</body>
+</html>
