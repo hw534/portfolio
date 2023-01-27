@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adonys B. Rios</title>    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <style>     
+    
+
+    /*:root {
+        --comentario: #abacaf;
+        --func_name: #abacaf;
+        --func: #BE5857;
+        --llaves: #4F8BD5;
+        --parentesis: #4F8BD5;
+        --str: #2285DD;
+        --var: #BE5857;
+        --var-name: #abacaf;
+        --font: #898A88;
+        --primary: #22272E;
+        --secondary: #22272E;
+        --tertiary: #22272E;
+        --other: #1C2128;
+        --links: #234CAE;
+        --header:#A9A9A9;
+        --font-two: white;
+        --border: #373E47;
+    }
+    
+    :root {
+        --comentario: rgb(0 ,99, 0);
+        --func_name: rgb(255, 255, 160);
+        --func: #234CAE;
+        --llaves: magenta;
+        --parentesis: yellow;
+        --str: chocolate;
+        --var: #234CAE;
+        --var-name: #93a6d3;
+        --font: #898A88;
+        --primary: #1B1B1B;
+        --secondary: #333333;
+        --tertiary: #1E1E1E;
+        --other: #252527;
+        --links: #234CAE;
+        --header:#A9A9A9;
+        --font-two: white;
+        --border: transparent;
+    }*/
+    
+    @font-face {
+        font-family: 'Cascadia Code';
+        font-style: normal;
+        font-weight: 400;
+        src: local('Cascadia Code'), url({{ url_for('static', filename='Cascadia.woff') }}) format('woff');
+    }
+
+    
+    * {
+        font-family: 'Cascadia Code', sans-serif;
+    }
+
+    .wrapper {
+        display: grid;
+        grid-template-columns: 50px 1fr;
+        grid-auto-rows: 40px 1fr;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        min-height: 140vh;
+    }
+
+    .nav{
+        grid-column: 1 / 3;
+        grid-row: 1;
+        background-color: var(--primary);
+        position: relative;
+    }
+    
+    .one {
+        grid-column: 1;
+        grid-row: 2;
+        background-color: var(--secondary);
+        padding: 10px;
+        border: 1px solid var(--border);
+    }
+
+    .two {        
+        grid-column: 2;
+        grid-row: 2;
+        background-color: var(--tertiary);    
+        display: grid;   
+        grid-template-rows: 40px 1fr;
+        position: relative;
+        border: 1px solid var(--border);
+    }
+
+    .two .bar{
+        grid-row: 1;
+        position: absolute;
+        left: 0;
+        top: 0;
+        right: 0;
+        height: 40px;
+        background-color: var(--other);
+        color: var(--font);
+        border: 1px solid var(--border);
+    }
+    
+    .two .content{
+        grid-row: 2;
+        padding: 10px;
+        color: var(--font);        
+    }
+
+    .one a {
+        color: var(--font);
+        display: block;
+        margin-top: 25px;
+        position: relative;
+    }
+
+    .one a::before{
+        content: attr(data-text); /* here's the magic */
+        position:absolute;
+        
+        /* vertically center */
+        top:50%;
+        transform:translateY(-50%);
+  
+        /* move to right */
+        left:100%;
+        margin-left:15px; /* and add a small left margin */
+  
+        /* basic styles */
+        min-width: 100px;
+        padding:10px;
+        background: var(--secondary);
+        color: var(--font-two);
+        text-align:center;
+        display:none; /* hide by default */
+        z-index: 100;
+    }
+
+    .one a:hover:before, .one a:hover:after {
+        display:block;
+    }
+
+    .one a::after{        
+  content: "";
+  position: absolute;
+  left: 100%;
+  top: 8px;
+  z-index: 100;
+  display: none;
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent var(--secondary) transparent transparent;
+    }
+
+    .nav-links{
+        position: absolute;
+        top: 7px;
+    }
+
+    .logo{
+        color: #0C96FF;
+    }
+
+    .nav-links a{
+        margin-left: 6px;
+        color: var(--font);
+        text-decoration: none;
+        font-size: 5px;
+        align-self: center;
+        padding: 5px;
+        border-radius: 5px;
+    }
+
+    .nav-links a:hover{
+        background-color: var(--secondary);
+    }
+
+    .links {
+        margin-left: 10px;
+    }
+
+    .tab{
+        background-color: var(--tertiary);
+        width: 150px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px;
+        border-right: 1px solid var(--border);
+    }
+
+    .tab svg{
+        color: var(--links);
+        padding: 0;
+    }
+
+    .n-c{   
+        display:none;
+        grid-template-columns: 40px 1fr;
+    }
+
+    .n-c #n-lines{
+        grid-column: 1;
+    }
+
+    #n-lines::selection{
+        color: #898A88;
+        background-color: transparent;
+    }
+
+    .n-c #content{
+        grid-column: 2;
+        color: var(--font-two);
+        min-width: 400px;
+    }
+
+    .content-lnding{
+        width: 400px;
+        margin-left: 200px;
+        margin-top: 100px;
+        grid-template-columns: 300px 500px;
+        display: grid;
+        gap: 100px;
+    }
+
+    .content-lnding h1{
+        color: var(--header);
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .content-lnding h3{
+        margin-top: -15px;
+    }
+
+    .content-lnding *{
+        font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    }
+
+    .lnd-btn{        
+        color: var(--links);
+        font-size: 15px;
+        display: block;
+        margin-top: 10px;
+        position: relative;
+    }
+
+    .lnd-btn svg{
+        width: 20px;
+    }
+
+    .lnd-text{
+        position: absolute;
+        left: 25px;
+    }
+
+    .pjrc-a{
+        color: var(--links);
+        text-decoration: none;
+        margin-right: 15px;
+    }
+
+    .h{
+        font-size: 25px;
+    }
+
+    .first-lnd{
+        grid-column: 1;
+    }
+    .second-lnd{
+        grid-column: 2;
+    }
+
+    .tcn{
+        position: relative;
+        background-color: var(--primary);
+        border-radius: 10px;
+        margin-top: 30px;
+        width: 100%;
+    }
+
+    .logo-tcn{
+        background-color: var(--font-two);
+        padding: 10px;
+        border-top-left-radius: 10px;
+        border-bottom-right-radius: 10px;
+        position: absolute;
+    }
+
+    .logo-tcn svg{
+        width: 14px;
+    }
+
+    .about-tcn{
+        padding-top: 2px;
+        padding-bottom: 2px;
+        margin-left: 50px;
+    }
+
+    .name-tcn{
+        color: var(--font-two);
+        font-size: 15px;
+        padding: 0;
+    }
+
+    .info-tcn{
+        margin-top: -5px;
+        font-size: 10px;
+    }
+
+    .tcn::before{
+        content: '';
+        width: var(--value);
+        background-color:  var(--links);
+        padding: 2px;
+        position: absolute;
+        bottom: 1px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+    }
+
+    .prjc-info{
+        color:#898A88;
+        font-size: 10px;
+    }
+
+    @media screen and (max-width: 1200px) {
+
+        .content-lnding{
+            grid-template-columns: 1fr;
+            margin: 0 auto;
+        }
+        
+        .second-lnd{
+            grid-column: 1;
+            grid-row: 2;
+        }
+
+    }
+
+    .tab-hidden{
+        display: none;
+    }
+
+    ul{
+        list-style: none;
+    }
+
+    .var{
+        color:var(--var);
+    }
+
+    .var_name{
+        color:var(--var-name);
+    }
+
+    .string{
+        color:var(--str);
+    }
+
+    .function{
+        color:var(--func);
+    }
+
+    .parentesis{
+        color: var(--parentesis);
+    }
+
+    .llaves{
+        color: var(--llaves);
+    }
+
+    .function_name{
+        color: var(--func_name);
+    }
+
+    .comentario{
+        color: var(--comentario);
+    }
+
+    .settings{
+        position: absolute;
+        top: 50vh;
+    }
+
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="nav">
+            <section class="nav-links">
+                <div class="links">
+                    <span class="logo">
+                        ABR
+                    </span><a>File</a><a>Edit</a><a>View</a><a>Go</a><a>Run</a><a>Terminal</a><a>Help</a></div>
+            </section>
+        </div>
+        <div class="one">
+            <a data-text="Home"  href="">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                </svg>                  
+            </a>
+            <a data-text="About me" class="btn-tab" id="first">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-file-code-fill" viewBox="0 0 16 16">
+                    <path d="M5.526 13.09c.976 0 1.524-.79 1.524-2.205 0-1.412-.548-2.203-1.524-2.203-.978 0-1.526.79-1.526 2.203 0 1.415.548 2.206 1.526 2.206zm-.832-2.205c0-1.05.29-1.612.832-1.612.358 0 .607.247.733.721L4.7 11.137a6.749 6.749 0 0 1-.006-.252zm.832 1.614c-.36 0-.606-.246-.732-.718l1.556-1.145c.003.079.005.164.005.249 0 1.052-.29 1.614-.829 1.614zm5.329.501v-.595H9.73V8.772h-.69l-1.19.786v.688L8.986 9.5h.05v2.906h-1.18V13h3z"/>
+                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                </svg>
+            </a>
+            <a data-text="Projects" class="btn-tab" id="second">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                </svg>
+            </a>
+            <a data-text="Contact me and more" class="btn-tab" id="third">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                </svg>                  
+            </a>
+            
+            <a data-text="Change theme" onclick="toggleTheme()" class="settings">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10.343 3.94c.09-.542.56-.94 1.11-.94h1.093c.55 0 1.02.398 1.11.94l.149.894c.07.424.384.764.78.93.398.164.855.142 1.205-.108l.737-.527a1.125 1.125 0 011.45.12l.773.774c.39.389.44 1.002.12 1.45l-.527.737c-.25.35-.272.806-.107 1.204.165.397.505.71.93.78l.893.15c.543.09.94.56.94 1.109v1.094c0 .55-.397 1.02-.94 1.11l-.893.149c-.425.07-.765.383-.93.78-.165.398-.143.854.107 1.204l.527.738c.32.447.269 1.06-.12 1.45l-.774.773a1.125 1.125 0 01-1.449.12l-.738-.527c-.35-.25-.806-.272-1.203-.107-.397.165-.71.505-.781.929l-.149.894c-.09.542-.56.94-1.11.94h-1.094c-.55 0-1.019-.398-1.11-.94l-.148-.894c-.071-.424-.384-.764-.781-.93-.398-.164-.854-.142-1.204.108l-.738.527c-.447.32-1.06.269-1.45-.12l-.773-.774a1.125 1.125 0 01-.12-1.45l.527-.737c.25-.35.273-.806.108-1.204-.165-.397-.505-.71-.93-.78l-.894-.15c-.542-.09-.94-.56-.94-1.109v-1.094c0-.55.398-1.02.94-1.11l.894-.149c.424-.07.765-.383.93-.78.165-.398.143-.854-.107-1.204l-.527-.738a1.125 1.125 0 01.12-1.45l.773-.773a1.125 1.125 0 011.45-.12l.737.527c.35.25.807.272 1.204.107.397-.165.71-.505.78-.929l.15-.894z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>                          
+            </a>
+        </div>
+        <div class="two">
+            <div class="bar">
+                <div class="tab">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="14">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                      </svg>
+                       Home.html <span style="float:right">x</span>
+                </div>
+            </div>
+            <div class="content">
+                <p style="color:rgb(160, 160, 160); font-size: 10px">web > templates > Home.html</p>
+                <div id="landing" class="landing">
+                    <div class="content-lnding">
+                        <div class="first-lnd">
+                            <h1 > Adonys Barzaga Rios </h1>
+                            <h3> Software Developer </h3>
+                            <h4> Start </h4>
+                            <a class="btn-tab lnd-btn" id="first">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" class="bi bi-file-code-fill" viewBox="0 0 16 16">
+                                    <path d="M5.526 13.09c.976 0 1.524-.79 1.524-2.205 0-1.412-.548-2.203-1.524-2.203-.978 0-1.526.79-1.526 2.203 0 1.415.548 2.206 1.526 2.206zm-.832-2.205c0-1.05.29-1.612.832-1.612.358 0 .607.247.733.721L4.7 11.137a6.749 6.749 0 0 1-.006-.252zm.832 1.614c-.36 0-.606-.246-.732-.718l1.556-1.145c.003.079.005.164.005.249 0 1.052-.29 1.614-.829 1.614zm5.329.501v-.595H9.73V8.772h-.69l-1.19.786v.688L8.986 9.5h.05v2.906h-1.18V13h3z"/>
+                                    <path d="M4 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H4zm0 1h8a1 1 0 0 1 1 1v12a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1z"/>
+                                </svg> <span class="lnd-text">About me</span>
+                            </a>
+                            <a class="btn-tab lnd-btn" id="second">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12.75V12A2.25 2.25 0 014.5 9.75h15A2.25 2.25 0 0121.75 12v.75m-8.69-6.44l-2.12-2.12a1.5 1.5 0 00-1.061-.44H4.5A2.25 2.25 0 002.25 6v12a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9a2.25 2.25 0 00-2.25-2.25h-5.379a1.5 1.5 0 01-1.06-.44z" />
+                                </svg> <span class="lnd-text">Projects</span>
+                            </a>
+                            <a class="btn-tab lnd-btn" id="third">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5l-9-5.25L3 7.5m18 0l-9 5.25m9-5.25v9l-9 5.25M3 7.5l9 5.25M3 7.5v9l9 5.25m0-9v9" />
+                                </svg> <span class="lnd-text">Contact and more</span>      
+                            </a>
+
+                            <a class="btn-tab lnd-btn" href="">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                                <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.012 8.012 0 0 0 16 8c0-4.42-3.58-8-8-8z"/>
+                                </svg> <span class="lnd-text">GitHub</span>  
+                            </a>
+                            <br>
+                            <h4> Recents projects on GitHub </h4>
+                            <div id='prjcts'>
+                                
+                            </div>
+                        </div>
+                        <div class="second-lnd">
+                            <p class="h"> My tech stack </p>
+                            <section class="tcn"  style="--value:99%">
+                                <span class="logo-tcn">
+                                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g fill="#44b78b"><path d="m14.135 4h3.965v18.169a26.218 26.218 0 0 1 -5.143.535c-4.842-.005-7.362-2.168-7.362-6.322 0-4 2.673-6.6 6.816-6.6a6.448 6.448 0 0 1 1.724.2zm0 9.142a3.992 3.992 0 0 0 -1.337-.2c-2 0-3.163 1.223-3.163 3.366 0 2.087 1.107 3.239 3.138 3.239a9.355 9.355 0 0 0 1.362-.1v-6.3z"/><path d="m24.4 10.059v9.1c0 3.133-.235 4.639-.923 5.938a6.316 6.316 0 0 1 -3.24 2.903l-3.678-1.733a5.708 5.708 0 0 0 3.141-2.629c.566-1.121.745-2.42.745-5.837v-7.742z"/><path d="m20.441 4.02h3.964v4.028h-3.964z"/></g></svg>
+                                </span>
+                                <div class="about-tcn">
+                                <h1 class="name-tcn">Django (Big Projects)</h1>
+                                <p class="info-tcn"> Django is an open source web development framework, written in Python, that follows the design pattern known as model-view-controller.</p>
+                                </div>
+                            </section>
+                            <section class="tcn" style="--value:50%">
+                                <span class="logo-tcn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M32 24.795c-1.164.296-1.884.013-2.53-.957l-4.594-6.356-.664-.88-5.365 7.257c-.613.873-1.256 1.253-2.4.944l6.87-9.222-6.396-8.33c1.1-.214 1.86-.105 2.535.88l4.765 6.435 4.8-6.4c.615-.873 1.276-1.205 2.38-.883l-2.48 3.288-3.36 4.375c-.4.5-.345.842.023 1.325L32 24.795zM.008 15.427l.562-2.764C2.1 7.193 8.37 4.92 12.694 8.3c2.527 1.988 3.155 4.8 3.03 7.95H1.48c-.214 5.67 3.867 9.092 9.07 7.346 1.825-.613 2.9-2.042 3.438-3.83.273-.896.725-1.036 1.567-.78-.43 2.236-1.4 4.104-3.45 5.273-3.063 1.75-7.435 1.184-9.735-1.248C1 21.6.434 19.812.18 17.9c-.04-.316-.12-.617-.18-.92q.008-.776.008-1.552zm1.498-.38h12.872c-.084-4.1-2.637-7.012-6.126-7.037-3.83-.03-6.58 2.813-6.746 7.037z"/></svg>
+                                </span>
+                                <div class="about-tcn">
+                                <h1 class="name-tcn">ExpressJS (Small Projects)</h1>
+                                <p class="info-tcn">Express is a minimal and flexible Node.js web application framework that provides a robust set of features for web and mobile applications.</p>
+                                </div>
+                            </section>
+                            <section class="tcn" style="--value:36%">
+                                <span class="logo-tcn">
+                                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="m29.507 18.773a1.378 1.378 0 0 0 -1.144-.921 2.619 2.619 0 0 0 -.913.051 8.2 8.2 0 0 1 -1.406.185 27.125 27.125 0 0 0 2.872-6.83c.953-3.689.444-5.369-.151-6.13a8.239 8.239 0 0 0 -6.644-3.128 11.773 11.773 0 0 0 -3.453.484 12.858 12.858 0 0 0 -2.02-.184 6.565 6.565 0 0 0 -3.518.867 16.039 16.039 0 0 0 -2.484-.624 7.694 7.694 0 0 0 -5.819.924c-1.734 1.224-2.538 3.352-2.389 6.325a36.351 36.351 0 0 0 1.406 6.538 22.579 22.579 0 0 0 1.514 3.863 4.786 4.786 0 0 0 2.442 2.549 2.4 2.4 0 0 0 2.379-.516 2.08 2.08 0 0 0 .5.43 3.328 3.328 0 0 0 .944.4 5.069 5.069 0 0 0 3.3-.2c.006.171.011.335.014.477.006.229.013.454.021.665a11.641 11.641 0 0 0 .441 3.3c.016.043.037.107.059.176a3.975 3.975 0 0 0 .991 1.745 2.955 2.955 0 0 0 2.09.777 4.7 4.7 0 0 0 .977-.109 4.592 4.592 0 0 0 3.091-1.787c.811-1.155 1.206-2.894 1.277-5.635.009-.078.018-.152.026-.222l.017-.145.191.017h.049a7.562 7.562 0 0 0 3.163-.548c.631-.293 2.654-1.361 2.177-2.8"/><path d="m27.689 19.053c-3.163.652-3.38-.418-3.38-.418 3.339-4.955 4.735-11.245 3.53-12.784-3.286-4.2-8.975-2.213-9.07-2.162l-.031.006a11.28 11.28 0 0 0 -2.11-.22 5.212 5.212 0 0 0 -3.34 1s-10.148-4.181-9.676 5.258c.1 2.008 2.878 15.194 6.191 11.211 1.211-1.456 2.381-2.688 2.381-2.688a3.071 3.071 0 0 0 2.006.512l.057-.048a2.21 2.21 0 0 0 .023.567c-.854.954-.6 1.121-2.309 1.472-1.726.356-.712.989-.05 1.155a3.508 3.508 0 0 0 3.915-1.272l-.05.2c.334.268.569 1.742.53 3.079a8.481 8.481 0 0 0 .2 2.971c.264.717.526 2.329 2.769 1.849a3.307 3.307 0 0 0 2.98-3.179c.1-1.234.313-1.052.326-2.155l.174-.522c.2-1.673.032-2.213 1.186-1.962l.281.025a6.4 6.4 0 0 0 2.615-.44c1.406-.652 2.239-1.742.853-1.455" fill="#336791"/><g fill="#fff"><path d="m13.882 10.631a.981.981 0 0 0 -.674.1.247.247 0 0 0 -.1.164.48.48 0 0 0 .117.314.881.881 0 0 0 .559.349.637.637 0 0 0 .09.006.725.725 0 0 0 .687-.467c.035-.248-.326-.414-.676-.463m9.442.008c-.027-.195-.374-.25-.7-.2s-.647.194-.62.389a.667.667 0 0 0 .62.411.592.592 0 0 0 .083-.006.8.8 0 0 0 .451-.247.5.5 0 0 0 .169-.343"/><path d="m28.741 18.979c-.121-.365-.509-.482-1.154-.349-1.915.4-2.6.121-2.826-.044a26.327 26.327 0 0 0 3.373-7.565 14.374 14.374 0 0 0 .5-3.253 3.513 3.513 0 0 0 -.509-2.2 7.482 7.482 0 0 0 -6.049-2.825 10.363 10.363 0 0 0 -3.5.551 8.717 8.717 0 0 0 -1.968-.253 5.684 5.684 0 0 0 -3.372.929 15.051 15.051 0 0 0 -2.74-.718 6.978 6.978 0 0 0 -5.242.805c-1.5 1.064-2.2 2.966-2.061 5.653a35.489 35.489 0 0 0 1.373 6.348c1.07 3.505 2.233 5.49 3.457 5.9a1.548 1.548 0 0 0 .491.081 2.049 2.049 0 0 0 1.563-.886q1.042-1.25 2.155-2.438a3.472 3.472 0 0 0 1.55.417v.042q-.14.166-.273.338c-.375.475-.452.574-1.658.823-.343.071-1.254.259-1.267.9-.014.7 1.077.991 1.2 1.022a5.144 5.144 0 0 0 1.249.162 3.634 3.634 0 0 0 2.5-.934 23.674 23.674 0 0 0 .381 5.684 2.854 2.854 0 0 0 2.729 2.1 4.378 4.378 0 0 0 .917-.1 3.462 3.462 0 0 0 3.156-3.212c.177-1.026.481-3.475.624-4.789a3.859 3.859 0 0 0 1.11.137 6.6 6.6 0 0 0 2.519-.48c.712-.331 2-1.141 1.763-1.846zm-4.69-8.879a7.968 7.968 0 0 1 -.116 1.107 10.229 10.229 0 0 0 -.14 1.3 9.859 9.859 0 0 0 .1 1.47 5.236 5.236 0 0 1 -.229 2.986 3.882 3.882 0 0 1 -.207-.426c-.058-.141-.185-.368-.359-.681-.68-1.22-2.274-4.078-1.458-5.244.243-.347.86-.7 2.408-.512zm-1.877-6.569a6.617 6.617 0 0 1 5.334 2.522c.975 1.245-.1 6.912-3.205 11.8l-.094-.119-.039-.049a5.524 5.524 0 0 0 .506-3.8 9.114 9.114 0 0 1 -.1-1.352 9.572 9.572 0 0 1 .131-1.206 7.614 7.614 0 0 0 .123-1.493.619.619 0 0 0 .013-.21 8.381 8.381 0 0 0 -1.912-3.6 8.61 8.61 0 0 0 -3.039-2.284 10.246 10.246 0 0 1 2.28-.214zm-12.695 17.123c-.627.754-1.061.61-1.2.562-.928-.31-2.006-2.272-2.955-5.384a35.167 35.167 0 0 1 -1.34-6.159c-.12-2.4.462-4.074 1.73-4.974 2.063-1.463 5.456-.587 6.819-.143-.02.019-.04.037-.059.057-2.237 2.259-2.184 6.119-2.178 6.355 0 .091.007.22.018.4a15.969 15.969 0 0 1 -.081 3.226 4.08 4.08 0 0 0 1.067 3.413q.133.138.278.262c-.383.41-1.216 1.318-2.1 2.385zm2.39-3.19a3.3 3.3 0 0 1 -.865-2.764 16.7 16.7 0 0 0 .087-3.381c-.006-.095-.011-.178-.014-.243a4.3 4.3 0 0 1 2.923-.853 1.188 1.188 0 0 1 .918 1.026c.646 2.989.085 4.234-.365 5.235-.093.206-.181.4-.255.6l-.058.156a10.218 10.218 0 0 0 -.368 1.109 2.788 2.788 0 0 1 -2-.887zm.113 4.03a1.733 1.733 0 0 1 -.523-.225 2.553 2.553 0 0 1 .557-.166c1.418-.292 1.637-.5 2.116-1.105.11-.139.234-.3.406-.489.256-.287.374-.238.586-.15a.829.829 0 0 1 .408.525.585.585 0 0 1 -.05.491 3.1 3.1 0 0 1 -3.499 1.12zm7.424 6.906a2.113 2.113 0 0 1 -2.754-1.526 31.129 31.129 0 0 1 -.3-6.853.392.392 0 0 0 -.017-.124 1.643 1.643 0 0 0 -.048-.23 1.589 1.589 0 0 0 -.862-1.034 1.216 1.216 0 0 0 -.793-.1 9.586 9.586 0 0 1 .342-1.022l.058-.157c.066-.177.148-.36.235-.554.471-1.047 1.117-2.482.416-5.722a2.044 2.044 0 0 0 -2.468-1.669 5.694 5.694 0 0 0 -1.887.591c-.078.04-.15.078-.216.115a8.244 8.244 0 0 1 1.918-4.952 4.711 4.711 0 0 1 3.57-1.336 7.567 7.567 0 0 1 5.781 2.763 8.774 8.774 0 0 1 1.582 2.71c-1.463-.149-2.458.14-2.962.861-1.1 1.568.6 4.612 1.416 6.075.15.268.279.5.319.6a5.432 5.432 0 0 0 .861 1.387c.077.1.152.189.208.271-.443.128-1.239.423-1.166 1.9-.058.74-.474 4.205-.686 5.43-.279 1.617-.874 2.22-2.548 2.579zm7.242-8.288a5.714 5.714 0 0 1 -1.931.4 2.422 2.422 0 0 1 -1.3-.167c-.045-.919.3-1.015.66-1.117.057-.016.112-.032.166-.05a1.353 1.353 0 0 0 .11.08c.639.422 1.78.467 3.39.135h.018a4.334 4.334 0 0 1 -1.116.72z"/></g></svg>
+                                </span>
+                                <div class="about-tcn">
+                                <h1 class="name-tcn">PostgreSQL</h1>
+                                <p class="info-tcn">PostgreSQL is a powerful, open source object-relational database system with over 35 years of active development that has earned it a strong reputation for reliability, feature robustness, and performance. </p>
+                                </div>
+                            </section>
+                            <section class="tcn" style="--value:67%">
+                                <span class="logo-tcn">
+                                    <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="m9 13.7q1.4-5.6 7-5.6c5.6 0 6.3 4.2 9.1 4.9q2.8.7 4.9-2.1-1.4 5.6-7 5.6c-5.6 0-6.3-4.2-9.1-4.9q-2.8-.7-4.9 2.1zm-7 8.4q1.4-5.6 7-5.6c5.6 0 6.3 4.2 9.1 4.9q2.8.7 4.9-2.1-1.4 5.6-7 5.6c-5.6 0-6.3-4.2-9.1-4.9q-2.8-.7-4.9 2.1z" fill="#44a8b3"/></svg>
+                                </span>
+                                <div class="about-tcn">
+                                <h1 class="name-tcn">TailwindCSS (Big Projects)</h1>
+                                <p class="info-tcn">JavaScript is an interpreted programming language, a dialect of the ECMAScript standard. It is defined as object-oriented, prototype-based, imperative, weakly-typed, and dynamic.</p>
+                                </div>
+                            </section>
+                        </div>
+                    </div>
+                </div>
+                <div id="n-c" class="n-c">
+                    <div id="n-lines">
+                    </div>
+                    <div id='content'>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="first-tab" class="tab-hidden">
+        <br>
+        <span class="comentario"> //Hi there 👋 <br>
+        //My name is Adonys. I'm software developer and programmer for fun! I work making programs that solve problems in my life as a programmer and also creating applications that I come up with from time to time.</span> <br><br><br>
+        
+        <span class="function">function</span> <span class="function_name">I_m_currently_working_on</span><span class="parentesis">()</span><span class="llaves">{</span> <br>
+        <ul>
+            <li> <span class="var">var</span> <span class="var_name">GeoEvents</span> =  <span class="string">"GeoEvents is an events platform, where you can create, edit, search for various events around the world or in your country or community."</span>;</li>
+        </ul><span class="llaves">}</span> <br><br>
+
+        <span class="function">function</span> <span class="function_name">I_have_knowledge_about</span><span class="parentesis">()</span><span class="llaves">{</span>
+        <ul>
+            <li>  <span class="var">var</span> <span class="var_name">React</span> = <span class="string">"Learning"</span>; </li>
+            <li>  <span class="var">var</span> <span class="var_name">Python</span> = <span class="string">"High knowledge, I love it bro"</span></li>
+            <li>  <span class="var">var</span> <span class="var_name">Django</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">JavaScript</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">Express</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">HTML</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">CSS</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">TailwindCSS</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">Flask</span> = <span class="string">"Mid knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">PythonTelegramBot</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">Unity</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">Blender</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">CSharp</span> = <span class="string">"High knowledge"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">CPP</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">NodeJs</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">AspNet</span> = <span class="string">"Learning"</span>; </li>
+            <li> <span class="var">var</span> <span class="var_name">Java</span> = <span class="string">"Learning"; </span></li>
+        </ul>
+        <span class="llaves">}</span> <br><br>
+
+        <span class="function">function</span> <span class="function_name">Fun_fact</span><span class="parentesis">()</span><span class="llaves">{</span><br><br>
+            <ul>
+                <li><span class="comentario">//My old username "hw534" comes from the union of the initials of the famous phrase "Hello World" and the number 534, a curious number I found on Wikipedia, a number that has stayed with me until now. </li></span></li>
+                <li><span class="comentario">//I love VSCode ❤️</span></li>
+            </ul>
+        <br><span class="llaves">}</span><br><br>
+
+        
+        </div>
+    <div id="second-tab" class="tab-hidden">
+        <br>
+        Projects! <br><br>
+
+        <div id="projects">
+
+        </div>
+    </div>
+    <div id="third-tab" class="tab-hidden"><br>
+        Heeeeeheheeeeeeee... You can find me in different places like Telegram, Instagram or Twitter, [ would appreciate a follow if you like my projects and you want to support me to continue with these. 🙂 ] <br><br>
+
+        - <a class="pjrc-a" href="https://t.me/kmkxx534">Telegram (Personal) </a><br>
+        - <a class="pjrc-a" href="https://www.instagram.com/adonysb.rios/">Instagram (Personal) </a><br>
+        - <a class="pjrc-a" href="">Twitter </a><br>
+        - <a class="pjrc-a" href="">Telegram Channel (Channel) </a><br><br>
+
+        Recommended projects: <br>
+        - PayLink <a class="pjrc-a" href="https://github.com/dlcastillop/paylink">https://github.com/dlcastillop/paylink</a><br>
+        - CuCoder <a class="pjrc-a" href="https://t.me/cucoders">https://t.me/cucoders</a><br>
+        - Hunti <a class="pjrc-a" href="https://twitter.com/hunti_">https://twitter.com/hunti_</a><br>
+        - Karbonized <a class="pjrc-a" href="http://www.github.com/yossTheDev/karbonized">http://www.github.com/yossTheDev/karbonized</a>
+
+
+        
+    </div>
+
+    <script>
+        var btns = Array.from(document.getElementsByClassName('btn-tab'));
+
+        btns.forEach(btn => {
+            var tab = document.getElementById(btn.getAttribute('id')+'-tab');
+            btn.addEventListener('click', () => {
+                document.getElementById('content').innerHTML = tab.innerHTML;
+                document.getElementById('n-c').style.display = 'grid';
+                document.getElementById('landing').style.display = 'none';
+            })
+        })
+        for(var i = 0; i < 101; i++){
+            document.getElementById('n-lines').innerHTML += '<br>'+i;
+        }
+
+        axios.get('https://api.github.com/users/hw534/repos').then(resp => {
+            resp.data.forEach(prj => {
+                if(prj.name!='hw534'){
+                    console.log(prj['name']);
+                    console.log(prj['description']);
+                    console.log(prj['html_url']);
+
+                    var prjt = "<span><a class='pjrc-a' href='" + prj['html_url'] + "'>" + prj['name'] + "</a> " +prj['html_url'] + "</span><br>";
+                    var info = "<span class='prjc-info'>" +  prj['description'] + "</span><br><br>"
+
+                    document.getElementById('prjcts').innerHTML += prjt;
+                    document.getElementById('projects').innerHTML += prjt+info;
+                }
+            });
+        });
+
+
+        function setTheme(i){
+            if(i=='1'){
+                var hojasDeEstilo = document.styleSheets;
+                hojasDeEstilo[0].insertRule(':root {--comentario: rgb(0 ,99, 0);--func_name: rgb(255, 255, 160);--func: #234CAE;--llaves: magenta;--parentesis: yellow;--str: chocolate;--var: #234CAE;--var-name: #93a6d3;--font: #898A88;--primary: #1B1B1B;--secondary: #333333;--tertiary: #1E1E1E;--other: #252527;--links: #234CAE;--header:#A9A9A9;--font-two: white;--border: transparent;}');               
+            }if(i=='2'){
+                var hojasDeEstilo = document.styleSheets;
+                hojasDeEstilo[0].insertRule(':root {--comentario: #abacaf;--func_name: #abacaf;--func: #BE5857;--llaves: #4F8BD5;--parentesis: #4F8BD5;--str: #2285DD;--var: #BE5857;--var-name: #abacaf;--font: #898A88;--primary: #22272E;--secondary: #22272E;--tertiary: #22272E;--other: #1C2128;--links: #234CAE;--header:#A9A9A9;--font-two: white;--border: #373E47;');
+                console.log(hojasDeEstilo[0].cssRules[0]);
+            }
+        }
+
+        function readCookie(name) {
+
+            var nameEQ = name + "="; 
+            var ca = document.cookie.split(';');
+          
+            for(var i=0;i < ca.length;i++) {
+          
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) {
+                return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+              }
+          
+            }
+          
+            setTheme(1);
+            return null;
+          
+          }
+
+          setTheme(readCookie( "theme" ));
+
+          function toggleTheme(){
+            var hojasDeEstilo = document.styleSheets;
+            if (readCookie("theme")=='1'){
+                
+                hojasDeEstilo[0].deleteRule(0);
+                setTheme(2);
+                document.cookie = "theme=" + encodeURIComponent( "2" );
+            }else{
+                
+                hojasDeEstilo[0].deleteRule(0);
+                setTheme(1);
+                document.cookie = "theme=" + encodeURIComponent( "1" ); 
+            }
+          }
+    </script>
+</body>
+</html>
