@@ -599,6 +599,29 @@
     </div>
 
     <script>
+
+        function readCookie(name) {
+
+            var nameEQ = name + "="; 
+            var ca = document.cookie.split(';');
+          
+            for(var i=0;i < ca.length;i++) {
+          
+              var c = ca[i];
+              while (c.charAt(0)==' ') c = c.substring(1,c.length);
+              if (c.indexOf(nameEQ) == 0) {
+                return decodeURIComponent( c.substring(nameEQ.length,c.length) );
+              }
+          
+            }
+          
+            setTheme(1);
+            return null;
+          
+          }
+
+          setTheme(readCookie( "theme" ));
+        
         var btns = Array.from(document.getElementsByClassName('btn-tab'));
 
         btns.forEach(btn => {
@@ -640,28 +663,6 @@
                 console.log(hojasDeEstilo[0].cssRules[0]);
             }
         }
-
-        function readCookie(name) {
-
-            var nameEQ = name + "="; 
-            var ca = document.cookie.split(';');
-          
-            for(var i=0;i < ca.length;i++) {
-          
-              var c = ca[i];
-              while (c.charAt(0)==' ') c = c.substring(1,c.length);
-              if (c.indexOf(nameEQ) == 0) {
-                return decodeURIComponent( c.substring(nameEQ.length,c.length) );
-              }
-          
-            }
-          
-            setTheme(1);
-            return null;
-          
-          }
-
-          setTheme(readCookie( "theme" ));
 
           function toggleTheme(){
             var hojasDeEstilo = document.styleSheets;
